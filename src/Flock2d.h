@@ -42,7 +42,7 @@ public:
 	
 	vector <Boid2d *>				boids;
 	vector <AttractionPoint2d *>	attractionPoints;
-
+	vector<ofRectangle *> avoidPoints;
 	// public ArrayList<Team> teams; // superclass flockTeam, etc
 
 	// forces
@@ -67,14 +67,28 @@ public:
 		attraction = attractiondeviation = 0.0f;
 	}
 	
+    int addAvoidPoint(ofPoint leftCorner, int avoidWidth, int avoidHeight) {
+		ofRectangle *tempTangle = new ofRectangle(leftCorner, avoidWidth, avoidHeight);
+		avoidPoints.push_back(tempTangle);
+		return avoidPoints.size();
+	}
+
+	void removeAvoidPoint(int index) {
+		avoidPoints.erase(avoidPoints.begin() + index);
+	}
 	
 	void clear(){
 		clearBoids();
 		clearAttrPts();
+		clearAvoidPoints();
+	}
+
+	void clearAvoidPoints() {
+		avoidPoints.clear();
 	}
 	
 	void clearBoids(){
-		while(boids.size()>0){
+		while(!boids.empty()){
 			delete boids[0];
 			boids.erase(boids.begin());
 		}
@@ -82,7 +96,7 @@ public:
 	}
 	
 	void clearAttrPts(){
-		while(attractionPoints.size()>0){
+		while(!attractionPoints.empty()){
 			delete attractionPoints[0];
 			attractionPoints.erase(attractionPoints.begin());
 		}
@@ -181,8 +195,8 @@ public:
 	}
 	
 	void doAttraction(){
-		for(int i=0; i<boids.size(); i++){
-			boids[i]->attr = attraction + ofRandom(-attractiondeviation, attractiondeviation);
+		for(auto & boid : boids){
+			boid->attr = attraction + ofRandom(-attractiondeviation, attractiondeviation);
 		}
 	}
 	
@@ -351,8 +365,16 @@ public:
 		return &attractionPoints;
 	}
 
+	vector<ofRectangle*>* getAvoidPoints() {
+		return &avoidPoints;
+	}
+
 	bool hasAttractionPoints() {
-		return attractionPoints.size() > 0;
+		return !attractionPoints.empty();
+	}
+
+	bool hasAvoidPoints() {
+		return !avoidPoints.empty();
 	}
 
 	void changeAttractionPoint(int id, float x, float y, float force,
@@ -360,13 +382,14 @@ public:
 //		try {
 		
 		AttractionPoint2d * ap = attractionPoints[id];//.get(id);
-		if(ap!=NULL){
+		if(ap!=nullptr){
 			ap->x = x;
 			ap->y = y;
 			ap->force = force;
 			ap->sensorDist = sensorDist;
 		} else {
-			cout << " attraction point null at id: " << id << endl;
+			
+		
 		}
 //		} catch (Exception e) {
 //			System.out.print("error in changeAttractionPoint \n");

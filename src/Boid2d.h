@@ -77,6 +77,8 @@ public:
 	}
 	
 	void bounds();
+
+	void avoid();
 	
 	/*
 	 * main funcs

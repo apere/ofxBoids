@@ -68,6 +68,9 @@ void Boid2d::bounds() {
 	
 }
 
+void Boid2d::avoid() {
+
+}
 
 
 
@@ -185,8 +188,7 @@ float* Boid2d::cohesion( float *vec) {
 //	float vec[] = {0.f, 0.f};//new float[2];
 	int count = 0;
 	
-	for (int i = 0; i < flockPtr->boids.size(); i++) {
-		Boid2d * other = flockPtr->boids.at(i);
+	for (Boid2d * other : flockPtr->boids) {
 		float dx = other->x - x;
 		float dy = other->y - y;
 		float d = ABS(dx) + ABS(dy);
@@ -220,8 +222,7 @@ float* Boid2d::align( float *vec) {
 //	float vec[] = {0.f, 0.f};//new float[2];
 	int count = 0;
 	
-	for (int i = 0; i < flockPtr->boids.size(); i++) {
-		Boid2d * other = flockPtr->boids.at(i);
+	for (Boid2d * other : flockPtr->boids) {
 		float dx = other->x - x;
 		float dy = other->y - y;
 		float d = ABS(dx) + ABS(dy);
@@ -252,8 +253,7 @@ float* Boid2d::separate(float *vec) {
 //	float vec[] = {0.f, 0.f}; //new float[2];
 	int count = 0;
 	
-	for (int i = 0; i < flockPtr->boids.size(); i++) {
-		Boid2d * other = flockPtr->boids.at(i);
+	for (Boid2d * other : flockPtr->boids) {
 		float dx = other->x - x;
 		float dy = other->y - y;
 		float d = ABS(dx) + ABS(dy);
@@ -367,8 +367,7 @@ float* Boid2d::flockfull(const float amount, float *vec) {
 	// boolean hasAttractionPoints = flock.hasAttractionPoints();
 	
 	// main full loop track all forces boid other boids
-	for (int i = 0; i < flockPtr->boids.size(); i++) {
-		Boid2d * other = flockPtr->boids.at(i);
+	for (Boid2d * other : flockPtr->boids) {
 		float dx = other->x - x;
 		float dy = other->y - y;
 		float d = ABS(dx) + ABS(dy);
@@ -430,8 +429,7 @@ float* Boid2d::flockfull(const float amount, float *vec) {
 	
 	// other forces
 	if (flockPtr->hasAttractionPoints()) {
-		for (int i = 0; i < flockPtr->attractionPoints.size(); i++) {
-			AttractionPoint2d * point = flockPtr->attractionPoints.at(i);
+		for (AttractionPoint2d * point : flockPtr->attractionPoints) {
 			float dx = point->x - x;
 			float dy = point->y - y;
 			float d = ABS(dx) + ABS(dy);
