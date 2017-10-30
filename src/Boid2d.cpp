@@ -69,7 +69,14 @@ void Boid2d::bounds() {
 }
 
 void Boid2d::avoid() {
-
+	vector<ofRectangle*>* avoidPoints = flockPtr->getAvoidPoints();
+	
+	//for (ofRectangle* currBounds : *avoidPoints) {
+	//	if (x > currBounds->getLeft()  && x < currBounds->getRight() && y > currBounds->getTop() && y < currBounds->getBottom() ) {
+	//		vy = -vy;
+	//		vx = -vx;
+	//	}
+//	}
 }
 
 
@@ -127,6 +134,7 @@ void Boid2d:: update(const float amount) {
 	y += vy * amount;
 	
 	bounds();
+	avoid();
 	
 	// reset acc on end
 //	ax = 0;
